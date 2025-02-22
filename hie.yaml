@@ -1,0 +1,8 @@
+cradle:
+  cabal:
+    - path: "src-lib"
+      component: "static-site-generator:lib:static-site-generator"
+    - path: "app"
+      component: "static-site-generator:exe:static-site-generator"
+    - path: "test"
+      component: "static-site-generator:test:static-site-generator-test"
