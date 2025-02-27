@@ -230,7 +230,7 @@ home =
               H.div H.! A.class_ "about" $ do
                 H.h2 "About Me"
                 H.p "I am a software developer with a strong focus on functional programming using a variety of languages."
-                H.p "Another focus besides developing softwaree is managing IT systems."
+                H.p "Another focus besides developing software is managing IT systems."
 
                 H.p "I'm also an iSAQB certified trainer for Software Architecture."
               H.div H.! A.class_ "interests" $ do
