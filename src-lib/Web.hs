@@ -117,7 +117,7 @@ runDefaultMap = \case
     let refLink = resolve ref
      in runDefaultMap (wFn refLink)
   Resource url wFn ->
-    insert url (ResourceRef url) $ runDefaultMap (wFn url)
+    insert url (ResourceRef url) $ runDefaultMap (wFn (fromString url))
 
 resolve' :: Web a -> String
 resolve' = \case
@@ -186,14 +186,14 @@ data Web a where
   Map :: (a -> b) -> Web a -> Web b
   Lift2 :: (a -> b -> c) -> Web a -> Web b -> Web c
   Refer :: Web a -> (String -> Web a) -> Web a
-  Resource :: String -> (String -> Web a) -> Web a
+  Resource :: (IsString s) => String -> (s -> Web a) -> Web a
   Seg :: String -> Web a -> Web a
   Or :: Web a -> Web a -> Web a
 
 refer :: Web a -> (String -> Web a) -> Web a
 refer = Refer
 
-resource :: String -> (String -> Web a) -> Web a
+resource :: (IsString s) => String -> (s -> Web a) -> Web a
 resource = Resource
 
 instance Functor Web where
@@ -219,11 +219,11 @@ home =
               H.! A.name "viewport"
               H.! A.content "width=device-width, inital-scale=1.0"
             H.title "Software Developer | Felix Leitz"
-            H.link H.! A.rel "stylesheet" H.! A.href (fromString lzsztStylesheet)
+            H.link H.! A.rel "stylesheet" H.! A.href lzsztStylesheet
           H.body $ do
             H.div H.! A.class_ "container" $ do
               H.img
-                H.! A.src (fromString felixImg)
+                H.! A.src felixImg
                 H.! A.alt "Felix Leitz"
                 H.! A.class_ "profile-img"
               H.h1 "Felix Leitz"
