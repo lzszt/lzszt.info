@@ -82,6 +82,7 @@ instance (Ord k) => Applicative (DefaultMap k) where
 data OrResource a
   = Data a
   | ResourceRef String
+  | None
   deriving (Show)
 
 instance Applicative OrResource where
@@ -89,12 +90,13 @@ instance Applicative OrResource where
   liftA2 f o1 o2 =
     case (o1, o2) of
       (Data d1, Data d2) -> Data $ f d1 d2
-      _ -> undefined
+      _ -> None
 
 instance Functor OrResource where
   fmap f = \case
     Data x -> Data $ f x
     ResourceRef r -> ResourceRef r
+    None -> None
 
 runDefaultMap :: Web a -> DefaultMap FilePath (Maybe (OrResource a))
 runDefaultMap = \case
@@ -167,6 +169,7 @@ renderMap dir =
             putStrLn $ "Writing to " <> target
             createDirectoryIfMissing True dir
             copyFile r target
+          None -> pure ()
     )
     . M.toList
 
